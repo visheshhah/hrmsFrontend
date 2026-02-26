@@ -30,3 +30,15 @@ export const signup = async (data: RegisterRequest): Promise<SignupResponse> => 
   const response = await axiosInstance.post<SignupResponse>("/auth/signup", data);
   return response.data;
 };
+
+
+// "dateOfBirth": "2002-08-12",
+//     "designation": "Backend Engineer",
+//     "email": "jay@gmail.com",
+//     "firstName": "Jay",
+//     "lastName": "Parekh",
+//     "joiningDate": "2021-03-15",
+//     "phoneNumber": "8876890678",
+//     "salary": 70000,
+//     "departmentId": 1,
+//     "managerId": 2

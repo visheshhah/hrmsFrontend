@@ -41,6 +41,11 @@ export default function TravelPlanDetails(){
 
                         <Typography variant="subtitle1">Description</Typography>
                         <Typography>{travelPlan?.description}</Typography>
+
+                        <Divider sx={{ my: 2 }} />
+                        <Button variant="contained" onClick={() => navigate(`/dashboard/travel/${travelPlanId}/assign-common-document`)}>
+                            Upload common document
+                        </Button>
                  </CardContent>
             </Card>
 

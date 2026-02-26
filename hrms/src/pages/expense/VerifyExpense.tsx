@@ -51,7 +51,7 @@ export default function VerifyExpense() {
       });
  
       toast.success("Expense approved successfully");
-      navigate("/dashboard/job/list");
+      navigate(`/dashboard/expense/travel/${Number(travelPlanId)}/${Number(employeeId)}/expenses`);
     } catch {
       toast.error("Failed to approve expense");
     } finally {

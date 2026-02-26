@@ -28,3 +28,20 @@ export const getEmployeesByManagerId = async (employeeId: number): Promise<Emplo
     const res = await axiosInstance.get<EmployeeResponse[]>(`/employee/manager/${employeeId}`);
     return res.data;
 }
+
+export type AddEmployeeRequest = {
+  dateOfBirth: string | undefined;
+  designation: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  joiningDate: string | undefined;
+  phoneNumber: string;
+  salary: number;
+  departmentId: number;
+  managerId?: number | null;
+}
+
+export const addEmployee = async (data: AddEmployeeRequest) => {
+  await axiosInstance.post("/employee/create", data);
+}

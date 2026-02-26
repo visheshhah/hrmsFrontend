@@ -59,6 +59,11 @@ export const getEmployeeDocumentsByEmployeeId = async (employeeId: number, trave
     return res.data;
 }
 
+export const getCommonTravelDocuments = async (id: number): Promise<TravelDocumentResponse[]> => {
+    const res = await axiosInstance.get<TravelDocumentResponse []>(`/document/${id}`);
+    return res.data;
+}
+
 //  private Long travelDocumentId;
 //     private Long travelPlanId;
 //     private Long employeeId;

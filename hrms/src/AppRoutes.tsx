@@ -30,12 +30,23 @@ import ExpenseTravelPlanDetails from "./pages/expense/ExpenseTravelPlanDetails";
 import HExpenseList from "./pages/expense/HExpenseList";
 import VerifyExpense from "./pages/expense/VerifyExpense";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
+import AddEmployee from "./pages/auth/AddEmployee";
+import UploadCommonTravelDocument from "./pages/travel-plan/UploadCommonTravelDocument";
+import SocialLayout from "./pages/social/SocialLayout";
+import SocialHome from "./pages/social/SocialHome";
+import CreatePost from "./pages/social/AddPost";
+import AddPost from "./pages/social/AddPost";
+import ViewAllPost from "./pages/social/ViewAllPost";
+import PostDetail from "./pages/social/PostDetail";
+import EditPost from "./pages/social/EditPost";
+import UserPostList from "./pages/social/UserPostList";
 
 export default function AppRoutes(){
     return(
        <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/employee" element={<AddEmployee/>}/>
         
         <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Navigate to="/dashboard" />} />
@@ -46,12 +57,18 @@ export default function AppRoutes(){
             <Route element={<ProtectedRoute allowedRoles={["ROLE_HR"]} />}>
                 <Route path="travel" element={<TravelLayout />}>
                 <Route index element={<TravelHome />} />
+                <Route path="employee" element={<AddEmployee/>}/>
+
                 <Route path="list" element={<TravelPlanList />} />
                 <Route path="create" element={<CreateTravel />} />
                 <Route path=":travelPlanId" element={<TravelPlanDetails />} />
                 <Route
                     path=":travelPlanId/:employeeId/assign-document"
                     element={<UploadDocument />}
+                />
+                <Route
+                    path=":travelPlanId/assign-common-document"
+                    element={<UploadCommonTravelDocument />}
                 />
                 </Route>
         
@@ -103,6 +120,17 @@ export default function AppRoutes(){
                 <Route path="document/:travelPlanId" element={<Document />} />
                 </Route>
             </Route>
+
+            <Route path="social" element={<SocialLayout/>}>
+                    <Route index element={<SocialHome/>}/>
+                    <Route path="create" element={<AddPost/>}/>
+                    <Route path="all" element={<ViewAllPost/>}/>
+                    <Route path="post/:postid" element={<PostDetail/>}/>
+                    <Route path="edit/:id" element={<EditPost/>}/>
+                    <Route path="post/my" element={<UserPostList/>}/>
+
+            </Route>
+
         
             </Route>
         </Route>

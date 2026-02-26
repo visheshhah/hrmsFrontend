@@ -42,6 +42,10 @@ export const getJobById = async (id: number): Promise<JobResponse> => {
 
 }
 
+export const deleteJob = async (jobId: number) => {
+    await axiosInstance.delete(`/job/${jobId}`);
+}
+
 
 export interface GiveReferral{
     comment: string;
@@ -81,5 +85,5 @@ export type ShareJob = {
 }
 
 export const shareJob = async (jobId: number, data: ShareJob) => {
-    const res = await axiosInstance.post(`/share/job/${jobId}`);
+    const res = await axiosInstance.post(`/share/job/${jobId}`, data);
 }

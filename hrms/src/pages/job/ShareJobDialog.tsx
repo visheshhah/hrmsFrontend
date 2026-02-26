@@ -44,6 +44,7 @@ export default function ShareJobDialog({
     try {
       setLoading(true);
  
+      console.log(data.email);
       await shareJob(jobId, data);
  
       toast.success("Job referred successfully");
