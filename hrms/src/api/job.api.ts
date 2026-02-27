@@ -87,3 +87,27 @@ export type ShareJob = {
 export const shareJob = async (jobId: number, data: ShareJob) => {
     const res = await axiosInstance.post(`/share/job/${jobId}`, data);
 }
+
+export type ViewReferralResponse = {
+    id: number;
+    employeeName: string;
+    comment: string;
+    friendName: string;
+    friendEmail: string;
+    fileName: string;
+
+}
+
+export const getReferrralByJobId = async (id: number): Promise<ViewReferralResponse []> => {
+    const res = await axiosInstance.get<ViewReferralResponse[]>(`/job/referral/${id}`);
+    return res.data;
+
+}
+
+
+// private long id;
+//     private String employeeName;
+//     private String comment;
+//     private String friendName;
+//     private String friendEmail;
+//     private String fileName;

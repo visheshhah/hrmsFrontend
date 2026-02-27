@@ -37,6 +37,40 @@ export default function JobHome() {
           </Card>
         </Grid>
     </RoleGuard>
+
+     <RoleGuard role="ROLE_HR">
+
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card>
+            <CardContent>
+              <h3>Close Job</h3>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/dashboard/job/close")}
+              >
+                Close
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+    </RoleGuard>
+
+    <RoleGuard role="ROLE_HR">
+
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card>
+            <CardContent>
+              <h3>View Referrals</h3>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/dashboard/job/referral/list")}
+              >
+                View
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+    </RoleGuard>
     </Grid>
   );
 }

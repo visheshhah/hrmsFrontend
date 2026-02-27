@@ -40,6 +40,9 @@ import ViewAllPost from "./pages/social/ViewAllPost";
 import PostDetail from "./pages/social/PostDetail";
 import EditPost from "./pages/social/EditPost";
 import UserPostList from "./pages/social/UserPostList";
+import DeleteJob from "./pages/job/DeleteJob";
+import ReferralJobsList from "./pages/job/ReferralJobList";
+import JobReferral from "./pages/job/JobReferral";
 
 export default function AppRoutes(){
     return(
@@ -108,6 +111,9 @@ export default function AppRoutes(){
                 <Route path="list" element={<JobsList />} />
                 <Route path="create" element={<CreateJob />} />
                 <Route path=":jobId" element={<JobDetails />} />
+                <Route path="close" element={<DeleteJob />} />
+                <Route path="referral/list" element={<ReferralJobsList />} />
+                <Route path="referral/:jobId" element={<JobReferral />} />
                 </Route>
             </Route>
         
