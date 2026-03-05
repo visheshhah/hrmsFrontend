@@ -59,7 +59,7 @@ export default function Login(){
                 <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     fullWidth
-                    label="Usernam"
+                    label="Username"
                     margin="normal"
                     {...register("username", { required: true })}
                 />

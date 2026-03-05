@@ -43,6 +43,20 @@ import UserPostList from "./pages/social/UserPostList";
 import DeleteJob from "./pages/job/DeleteJob";
 import ReferralJobsList from "./pages/job/ReferralJobList";
 import JobReferral from "./pages/job/JobReferral";
+import GameLayout from "./pages/game/GameLayout";
+import GameHome from "./pages/game/GameHome";
+import SelectGame from "./pages/game/SelectGame";
+import SlotList from "./pages/game/SlotList";
+import BookSlot from "./pages/game/BookSlot";
+import GameInterest from "./pages/game/GameInterest";
+import CreateConfiguration from "./pages/game/CreateConfiguration";
+import RegisteredSlot from "./pages/game/RegisteredSlot";
+import ChooseGame from "./pages/game/ChooseGame";
+import CompletedBooking from "./pages/game/CompletedBooking";
+import UpcomingBooking from "./pages/game/UpcomingBooking";
+import CancelledBooking from "./pages/game/CancelledBooking";
+import AllGameConfiguration from "./pages/game/AllGameConfiguration";
+import UpdateConfiguration from "./pages/game/UpdateConfiguration";
 
 export default function AppRoutes(){
     return(
@@ -134,9 +148,24 @@ export default function AppRoutes(){
                     <Route path="post/:postid" element={<PostDetail/>}/>
                     <Route path="edit/:id" element={<EditPost/>}/>
                     <Route path="post/my" element={<UserPostList/>}/>
-
             </Route>
 
+            <Route path="game" element={<GameLayout/>}>
+                    <Route index element={<GameHome/>}/>
+                    <Route path="choose" element={<SelectGame/>}/>
+                    <Route path=":gameId/slot" element={<SlotList/>}/>
+                    <Route path="slot/:slotId" element={<BookSlot/>}/>
+                    <Route path="interest" element={<GameInterest/>}/>
+                    <Route path="configure/create" element={<CreateConfiguration/>}/>
+                    <Route path="configure/update" element={<AllGameConfiguration/>}/>
+                    <Route path="configure/update/:configId" element={<UpdateConfiguration/>}/>
+
+                    <Route path="choose/game" element={<ChooseGame/>}/>
+                    <Route path=":gameId/registrations" element={<RegisteredSlot/>}/>
+                    <Route path="slot/booking/cancelled" element={<CancelledBooking/>}/>
+                    <Route path="slot/booking/completed" element={<CompletedBooking/>}/>
+                    <Route path="slot/booking/upcoming" element={<UpcomingBooking/>}/>
+            </Route>
         
             </Route>
         </Route>

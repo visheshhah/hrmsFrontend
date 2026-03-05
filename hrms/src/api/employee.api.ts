@@ -19,6 +19,11 @@ export const getEmployeeById = async (employeeId: number): Promise<EmployeeRespo
     return res.data;
 }
 
+export const getEmployeeDetail = async (): Promise<EmployeeResponse> => {
+    const res = await axiosInstance.get<EmployeeResponse>(`/employee/me`);
+    return res.data;
+}
+
 export const getManagerialChain = async (employeeId: number): Promise<EmployeeResponse[]> => {
     const res = await axiosInstance.get<EmployeeResponse[]>(`/employee/${employeeId}/manager-chain`);
     return res.data;
