@@ -7,6 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/useAuth";
+import NotificationBell from "../pages/notification/NotificationBell";
 
 type NavbarProps = {
     drawerWidth: number;
@@ -31,6 +32,8 @@ export default function Navbar({ drawerWidth }: NavbarProps) {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           HRMS Dashboard
         </Typography>
+
+        <NotificationBell/>
 
         <Button color="inherit" onClick={handleLogout}>
           Logout

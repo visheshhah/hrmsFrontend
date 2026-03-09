@@ -94,6 +94,12 @@ export default function Sidebar({ drawerWidth }: SidebarProps) {
                 <ListItemText primary="Game" />
               </ListItemButton>
             </ListItem>
+
+            <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate("/dashboard/notification")}>
+              <ListItemText primary="Notification" />
+            </ListItemButton>
+          </ListItem>
         </>
 
 

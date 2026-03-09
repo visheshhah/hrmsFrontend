@@ -57,6 +57,9 @@ import UpcomingBooking from "./pages/game/UpcomingBooking";
 import CancelledBooking from "./pages/game/CancelledBooking";
 import AllGameConfiguration from "./pages/game/AllGameConfiguration";
 import UpdateConfiguration from "./pages/game/UpdateConfiguration";
+import NotificationList from "./pages/notification/NotificationList";
+import NotificationDetail from "./pages/notification/NotificationDetail";
+import NotificationLayout from "./pages/notification/NotificationLayout";
 
 export default function AppRoutes(){
     return(
@@ -128,6 +131,12 @@ export default function AppRoutes(){
                 <Route path="close" element={<DeleteJob />} />
                 <Route path="referral/list" element={<ReferralJobsList />} />
                 <Route path="referral/:jobId" element={<JobReferral />} />
+                </Route>
+
+                <Route path="notification" element={<NotificationLayout/>}>
+                    <Route index element={<NotificationList/>}/>
+
+                    <Route path=":notificationId" element={<NotificationDetail/>}/>
                 </Route>
             </Route>
         
