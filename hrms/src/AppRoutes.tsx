@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import DashboardLayout from "./components/DashboardLayout";
@@ -60,8 +60,31 @@ import UpdateConfiguration from "./pages/game/UpdateConfiguration";
 import NotificationList from "./pages/notification/NotificationList";
 import NotificationDetail from "./pages/notification/NotificationDetail";
 import NotificationLayout from "./pages/notification/NotificationLayout";
+import CreateJobWithReviewer from "./pages/job/CreateJobWithReviewer";
+import TravelPlans from "./pages/employee-travel-plan/travel-plan-list/TravelPlans";
+import EmployeeTravelPlanDetail from "./pages/employee-travel-plan/travel-plan-list/EmployeeTravelPlanDetail";
+import RoleLayout from "./pages/role/RoleLayout";
+import RoleHome from "./pages/role/RoleHome";
+import RoleUserList from "./pages/role/RoleUserList";
+import ManagerLayout from "./pages/manager/ManagerLayout";
+import ManagerHome from "./pages/manager/ManagerHome";
+import ManagerTeamList from "./pages/manager/ManagerTeamList";
+import ManagerEmployeeDetail from "./pages/manager/ManagerEmployeeDetail";
+import ManagerEmployeeTravelDetail from "./pages/manager/ManagerEmployeeTravelDetail";
+import UpdateTravelPlan from "./pages/travel-plan/UpdateTravelPlan";
+import UpdateJob from "./pages/job/UpdateJob";
+import ExpenseRecords from "./pages/expense/expense-tabs/ExpenseRecords";
+import UpdateExpense from "./pages/expense/UpdateExpense";
+import EmployeeProfile from "./pages/profile/EmployeeProfile";
+import EmployeeLayout from "./pages/profile/EmployeeLayout";
+import EmployeeProfileList from "./pages/profile/EmployeeProfileList";
+import UpdateProfile from "./pages/profile/UpdateProfile";
+import type { TravelPlanResponse } from "./api/travel.api";
+import HRTravelPlans from "./pages/travel-plan/travel-tabs/HRTravelPlans";
+import HRExpenseTravelPlans from "./pages/expense/travel-plan-list/HRExpenseTravelPlans";
 
 export default function AppRoutes(){
+    const navigate = useNavigate();
     return(
        <Routes>
         <Route path="/login" element={<Login />} />
@@ -73,23 +96,53 @@ export default function AppRoutes(){
         
             <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
+            <Route path="profile" element={<EmployeeProfile />}/>
+
+            <Route element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]} />}>
+                <Route path="role" element={<RoleLayout />}>
+                    <Route index element={<RoleHome />}/>
+                    <Route path="all" element={<RoleUserList />}/>
+                    
+                </Route>
+
+            </Route>
+
+             <Route element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]} />}>
+                <Route path="team" element={<ManagerLayout />}>
+                    <Route index element={<ManagerHome />}/>
+                    <Route path="all" element={<ManagerTeamList />}/>
+                    <Route path=":employeeId" element={<ManagerEmployeeDetail/>}/>
+                    <Route path=":employeeId/:travelPlanId" element={<ManagerEmployeeTravelDetail/>}/>
+                    
+                </Route>
+
+            </Route>
+            
         
             <Route element={<ProtectedRoute allowedRoles={["ROLE_HR"]} />}>
                 <Route path="travel" element={<TravelLayout />}>
-                <Route index element={<TravelHome />} />
-                <Route path="employee" element={<AddEmployee/>}/>
+                    <Route index element={<TravelHome />} />
+        
+        
+                    <Route path="list" element={<HRTravelPlans />} />
+                    <Route path="create" element={<CreateTravel />} />
+                    <Route path="update/:travelPlanId" element={<UpdateTravelPlan/>}/>
+                    <Route path=":travelPlanId" element={<TravelPlanDetails />} />
+                    <Route
+                        path=":travelPlanId/:employeeId/assign-document"
+                        element={<UploadDocument />}
+                    />
+                    <Route
+                        path=":travelPlanId/assign-common-document"
+                        element={<UploadCommonTravelDocument />}
+                    />
+                </Route>
 
-                <Route path="list" element={<TravelPlanList />} />
-                <Route path="create" element={<CreateTravel />} />
-                <Route path=":travelPlanId" element={<TravelPlanDetails />} />
-                <Route
-                    path=":travelPlanId/:employeeId/assign-document"
-                    element={<UploadDocument />}
-                />
-                <Route
-                    path=":travelPlanId/assign-common-document"
-                    element={<UploadCommonTravelDocument />}
-                />
+                <Route path="employee" element={<EmployeeLayout />}>
+                    <Route index element={<EmployeeProfileList />}/>
+                    <Route path=":employeeId" element={<UpdateProfile />}/>
+                    <Route path="add" element={<AddEmployee/>}/>
+                    
                 </Route>
         
                 {/* <Route path="job" element={<JobLayout />}>
@@ -100,37 +153,49 @@ export default function AppRoutes(){
                 </Route> */}
         
                 <Route path="expense" element={<ExpenseLayout />}>
-                <Route index element={<ExpenseHome />} />
-                <Route path="travel" element={<ExpenseTravelPlanList />} />
-                <Route
-                    path="travel/:travelPlanId"
-                    element={<ExpenseTravelPlanDetails />}
-                />
-                <Route
-                    path="travel/:travelPlanId/:employeeId/expenses"
-                    element={<HExpenseList />}
-                />
-                <Route
-                    path="travel/:travelPlanId/:employeeId/:expenseId/expenses/verify"
-                    element={<VerifyExpense />}
-                />
+                    <Route index element={<ExpenseHome />} />
+                    <Route path="travel" element={<HRExpenseTravelPlans
+                        onClick={(travel: TravelPlanResponse) => {
+                            navigate(`/dashboard/expense/travel/${travel.travelPlanId}`);
+                        }}
+                        actionLabel="View Details"
+                        pageTitle="Travels"
+                    />}/>
+                    {/* <Route path="travel" element={<ExpenseTravelPlanList />} /> */}
+                    <Route
+                        path="travel/:travelPlanId"
+                        element={<ExpenseTravelPlanDetails />}
+                    />
+                    <Route
+                        path="travel/:travelPlanId/:employeeId/expenses"
+                        element={<ExpenseRecords />}
+                    />
+                    <Route
+                        path="travel/:travelPlanId/:employeeId/:expenseId/expenses/verify"
+                        element={<VerifyExpense />}
+                    />
+                    <Route
+                        path="travel/:travelPlanId/:employeeId/:expenseId/expenses/update"
+                        element={<UpdateExpense />}
+                    />
                 </Route>
             </Route>
         
             <Route element={<ProtectedRoute allowedRoles={["ROLE_HR", "ROLE_EMPLOYEE"]} />}>
                 <Route path="chart" element={<ChartLayout />}>
-                <Route index element={<EmployeeList />} />
-                <Route path=":id" element={<EmployeeChartPage />} />
+                    <Route index element={<EmployeeList />} />
+                    <Route path=":id" element={<EmployeeChartPage />} />
                 </Route>
 
-                 <Route path="job" element={<JobLayout />}>
-                <Route index element={<JobHome />} />
-                <Route path="list" element={<JobsList />} />
-                <Route path="create" element={<CreateJob />} />
-                <Route path=":jobId" element={<JobDetails />} />
-                <Route path="close" element={<DeleteJob />} />
-                <Route path="referral/list" element={<ReferralJobsList />} />
-                <Route path="referral/:jobId" element={<JobReferral />} />
+                <Route path="job" element={<JobLayout />}>
+                    <Route index element={<JobHome />} />
+                    <Route path="list" element={<JobsList />} />
+                    <Route path="create" element={<CreateJobWithReviewer />} />
+                    <Route path="update/:jobId" element={<UpdateJob/>}/>
+                    <Route path=":jobId" element={<JobDetails />} />
+                    <Route path="close" element={<DeleteJob />} />
+                    <Route path="referral/list" element={<ReferralJobsList />} />
+                    <Route path="referral/:jobId" element={<JobReferral />} />
                 </Route>
 
                 <Route path="notification" element={<NotificationLayout/>}>
@@ -142,11 +207,33 @@ export default function AppRoutes(){
         
             <Route element={<ProtectedRoute allowedRoles={["ROLE_EMPLOYEE"]} />}>
                 <Route path="Etravel" element={<EmployeeTravelLayout />}>
-                <Route index element={<EmployeeTravelHome />} />
-                <Route path="Elist" element={<EEmployeeTravelPlanList />} />
-                <Route path="expense/:travelPlanId" element={<Expense />} />
-                <Route path="Dlist" element={<DEmployeeTravelPlanList />} />
-                <Route path="document/:travelPlanId" element={<Document />} />
+                    <Route index element={<EmployeeTravelHome />} />
+                    <Route path="travels" element={<TravelPlans
+                        onClick={(travel: TravelPlanResponse) => {
+                            navigate(`/dashboard/Etravel/${travel.travelPlanId}`);
+                        }}
+                        actionLabel="View Details"
+                        pageTitle="Travels"
+                    />}/>
+                    <Route path=":travelPlanId" element={<EmployeeTravelPlanDetail/>}/>
+                    <Route path="Elist" element={<TravelPlans
+                        onClick={(travel: TravelPlanResponse) => {
+                            navigate(`/dashboard/Etravel/expense/${travel.travelPlanId}`);
+                        }}
+                        actionLabel="Submit Expense"
+                        pageTitle="Submit Expense"
+                    />}/>
+                    {/* <Route path="Elist" element={<EEmployeeTravelPlanList />} /> */}
+                    <Route path="expense/:travelPlanId" element={<Expense />} />
+                    <Route path="Dlist" element={<TravelPlans
+                        onClick={(travel: TravelPlanResponse) => {
+                            navigate(`/dashboard/Etravel/document/${travel.travelPlanId}`);
+                        }}
+                        actionLabel="Submit Document"
+                        pageTitle="Submit Document"
+                    />}/>
+                    {/* <Route path="Dlist" element={<DEmployeeTravelPlanList />} /> */}
+                    <Route path="document/:travelPlanId" element={<Document />} />
                 </Route>
             </Route>
 

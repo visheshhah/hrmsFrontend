@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { deleteJob, getAllJobs, type JobResponse } from "../../api/job.api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { Box, Card, CardContent, Divider, Grid, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Card, CardContent, Divider, Grid, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+
 
 export default function DeleteJob(){
     //load jobs created by this hr in card format and a delete icon beside it
@@ -61,17 +63,36 @@ export default function DeleteJob(){
                                 </Typography>
                             </Stack>
 
-                            <Stack>
-
-                                <IconButton
-                                color="error"
-                                size="small"
-                                onClick={() => {
-                                handleDelete(job.id);
-                                }}
+                            <Stack
+                            direction="row"
+                                    spacing={1}
+                                    justifyContent="center"
+                                    alignItems="center"
                             >
-                                <DeleteIcon />
-                            </IconButton>
+
+                                <Tooltip title="Update">
+                                            <IconButton
+                                            color="secondary"
+                                            size="small"
+                                            onClick={() => navigate(`/dashboard/job/update/${job.id}`)}
+                                            >
+                                            <EditIcon />
+                                            </IconButton>
+                                </Tooltip>
+                                
+
+                                <Tooltip title="Delete">
+
+                                    <IconButton
+                                    color="error"
+                                    size="small"
+                                    onClick={() => {
+                                    handleDelete(job.id);
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                 </IconButton>
+                                </Tooltip>
                             </Stack>
                         </Stack>
 

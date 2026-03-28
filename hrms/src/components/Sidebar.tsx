@@ -42,7 +42,7 @@ export default function Sidebar({ drawerWidth }: SidebarProps) {
           <>
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate("/dashboard/travel")}>
-                <ListItemText primary="Travel Plans" />
+                <ListItemText primary="Travel Plan Management" />
               </ListItemButton>
             </ListItem>
  
@@ -57,13 +57,35 @@ export default function Sidebar({ drawerWidth }: SidebarProps) {
                 <ListItemText primary="Expense Management" />
               </ListItemButton>
             </ListItem>
+          
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/dashboard/employee")}>
+                <ListItemText primary="Users" />
+              </ListItemButton>
+            </ListItem>
           </>
         )}
  
         {hasRole("ROLE_EMPLOYEE") && (
           <ListItem disablePadding>
             <ListItemButton onClick={() => navigate("/dashboard/Etravel")}>
-              <ListItemText primary="E-Travel Plans" />
+              <ListItemText primary="Your Travel Plans" />
+            </ListItemButton>
+          </ListItem>
+        )}
+
+        {hasRole("ROLE_MANAGER") && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate("/dashboard/team")}>
+              <ListItemText primary="Team" />
+            </ListItemButton>
+          </ListItem>
+        )}
+
+        {hasRole("ROLE_ADMIN") && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate("/dashboard/role")}>
+              <ListItemText primary="Role Management" />
             </ListItemButton>
           </ListItem>
         )}

@@ -5,12 +5,13 @@ import {
     TextField,
     Typography
 } from "@mui/material"
-import { login } from "../../api/auth.api"
+import { getCurrentUser, login } from "../../api/auth.api"
 import { toast } from "react-toastify"
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
+import { useUser } from "../../context/UseUser";
 
 interface LoginRequest {
     username: string;
@@ -29,12 +30,17 @@ export default function Login(){
     const navigate = useNavigate();
     //
     const { login: setAuth } = useAuth();
+    const { setUser } = useUser();
 
     const onSubmit = async (data: LoginRequest) => {
            try{
                 const token: string = await login(data);
                 //localStorage.setItem("token", token);
                 setAuth(token);
+                //
+                const user = await getCurrentUser();
+                setUser(user);
+                //
                 toast.success("Login successful");
                 navigate("/dashboard");
 

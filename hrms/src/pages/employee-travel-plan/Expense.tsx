@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react"
-import { getExployeeExpenses, submitExpense, type EmployeeExpenseResponse, type SubmitExpense } from "../../api/expense.api"
+import { getExployeeExpenses, getTotalApprovedAmountByEmployee, getTotalClaimedAmountByEmployee, submitExpense, type EmployeeExpenseResponse, type SubmitExpense } from "../../api/expense.api"
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Box, Button, Card, CardContent, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Divider, Grid, MenuItem, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { openFile } from "../../api/file.api";
 import type { CategoryType } from "../expense/Test3";
 import { getCategoryType } from "../../api/category.api";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import type { ErrorResponse } from "../../utils/commonInterface";
+import EmployeeExpenseRecords from "./empense-list/EmployeeExpenseRecords";
 
 export default function Expense(){
+
+    const [claimedExpense, setClaimedExpense] = useState(0);
+    const [approvedExpense, setApprovedExpense] = useState(0);
 
     const[expenses, setExpenses] = useState<EmployeeExpenseResponse[]>([]);
     const { travelPlanId } = useParams();
@@ -36,6 +40,16 @@ export default function Expense(){
         })
         .catch(() => toast.error("Failed to load category"));
     }, []);
+
+    useEffect(() => {
+                getTotalClaimedAmountByEmployee(Number(travelPlanId))
+                    .then((data) => setClaimedExpense(data))
+            })
+    
+    useEffect(() => {
+                getTotalApprovedAmountByEmployee(Number(travelPlanId))
+                    .then((data) => setApprovedExpense(data))
+    })
 
     const {
         reset,
@@ -213,54 +227,34 @@ export default function Expense(){
                     </CardContent>
                 </Card>
 
-                <Card sx={{ mt: 4}}>
-                    <Typography variant="h6" m={3}>
-                        Expenses
-                    </Typography>
+                <Stack
+                    direction="row"
+                    gap={2}
+                     sx={{ mt: 4}}
+                >
 
-                        <TableContainer component={Paper}>
-                        <Table>
-                        <TableHead>
-                            <TableRow>
-                            <TableCell>Description</TableCell>
-                            <TableCell>Category</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Amount</TableCell>
-                            <TableCell>Remark</TableCell>
-                            <TableCell align="center">Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
+                    <Card sx={{ mb: 3, flex: 1 }}>
+                            <CardContent>
+                                <Typography variant="h6">Total Claimed Expense</Typography>
+                
 
-                        <TableBody>
-                            {expenses?.map((expense, index) => (
-                            <TableRow key={expense.id}>
-                                <TableCell>{expense.description}</TableCell>
-                                <TableCell>{expense.categoryName}</TableCell>
-                                <TableCell>{expense.expenseStatus}</TableCell>
-                                <TableCell>{expense.amount}</TableCell>
-                                <TableCell>
-                                    {expense.remark ? expense.remark : "-"}
-                                </TableCell>
+                                <Divider sx={{ my: 2 }} />
+                                <Typography>Rs.{claimedExpense}</Typography>
+                        </CardContent>
+                    </Card>
 
-                                <TableCell align="center">
-                                <Button onClick={() => openFile(expense.proofs[0].id)} variant="contained">
-                                    View Proof
-                                </Button>
-                                </TableCell>
-                            </TableRow>
-                            ))}
+                    <Card sx={{ mb: 3, flex: 1 }}>
+                            <CardContent>
+                                <Typography variant="h6">Total Approved Expense</Typography>
+                
 
-                            {expenses?.length === 0 && (
-                            <TableRow key="no-expenses">
-                                <TableCell colSpan={6} align="center">
-                                No Expenses found
-                                </TableCell>
-                            </TableRow>
-                            )}
-                        </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Card>
+                                <Divider sx={{ my: 2 }} />
+                                <Typography>Rs.{approvedExpense}</Typography>
+                        </CardContent>
+                    </Card>
+                </Stack>
+
+                <EmployeeExpenseRecords/>
             </Box>
     )
 }

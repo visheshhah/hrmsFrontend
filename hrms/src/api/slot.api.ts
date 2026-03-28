@@ -19,6 +19,10 @@ export const getSlotDetail = async (slotId: number): Promise<SlotResponse> => {
     return res.data;
 }
 
+export const deleteSlotConfiguration = async (slotId: number) => {
+    await axiosInstance.delete(`/slot/${slotId}`);
+}
+
 export type RegisterSlot = {
     employeeIds : number[];
 }
@@ -134,6 +138,16 @@ export const getCancelledgBooking = async(): Promise<SlotResponse[]> => {
 
 export const getCompletedBooking = async(): Promise<SlotResponse[]> => {
     const res = await axiosInstance.get<SlotResponse[]>(`/booking/completed`);
+    return res.data;
+}
+
+export type GameTabType = {
+    label: string;
+    value: number;
+}
+
+export const getGameTabs = async(): Promise<GameTabType[]> => {
+    const res = await axiosInstance.get<GameTabType[]>(`/game-interest/tabs`);
     return res.data;
 }
 // private Long slotRegistrationId;

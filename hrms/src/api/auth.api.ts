@@ -1,3 +1,4 @@
+import type { CurrentUser } from "../context/UserContexr";
 import axiosInstance from "./axiosInstance";
 
 interface LoginRequest {
@@ -29,6 +30,11 @@ export const login = async (data: LoginRequest): Promise<string> => {
 export const signup = async (data: RegisterRequest): Promise<SignupResponse> => {
   const response = await axiosInstance.post<SignupResponse>("/auth/signup", data);
   return response.data;
+};
+
+export const getCurrentUser = async (): Promise<CurrentUser> => {
+  const res = await axiosInstance.get<CurrentUser>("/auth/me");
+  return res.data;
 };
 
 

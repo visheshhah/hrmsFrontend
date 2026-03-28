@@ -8,11 +8,12 @@ export default function TravelHome() {
   return (
     <>
       
+    <RoleGuard role="ROLE_HR">
       <Grid container spacing={2}>
-        <Grid sx={{ m: 2}} size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card>
             <CardContent>
-              <h3>View Travel Plans</h3>
+              <h3>Manage Travel Plans</h3>
               <Button
                 variant="outlined"
                 onClick={() => navigate("/dashboard/travel/list")}
@@ -22,11 +23,7 @@ export default function TravelHome() {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
 
-      <RoleGuard role="ROLE_HR">
-
-        <Grid container>
           <Grid size={{ xs: 12, sm: 4 }}>
             <Card>
               <CardContent>
@@ -34,7 +31,7 @@ export default function TravelHome() {
                 <Button
                   variant="contained"
                   onClick={() => navigate("/dashboard/travel/create")}
-                >
+                  >
                   Create
                 </Button>
               </CardContent>

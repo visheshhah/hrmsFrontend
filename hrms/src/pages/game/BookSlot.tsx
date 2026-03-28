@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { getSlotDetail, registerSlot, type RegisterSlot, type SlotResponse } from "../../api/slot.api"
 import { replace, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getEmployees, type EmployeeResponse } from "../../api/employee.api";
+import { getEmployees, getInterestedEmployees, type EmployeeResponse } from "../../api/employee.api";
 import { Box, Button, Card, CardContent, Checkbox, CircularProgress, Container, FormControlLabel, FormGroup, Stack, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
@@ -60,7 +60,7 @@ export default function BookSlot(){
         try {
           const [slotRes, employeeRes] = await Promise.all([
             getSlotDetail(Number(slotId)),
-            getEmployees(),
+            getInterestedEmployees(Number(slotId)),
           ]);
     
           setSlot(slotRes);
@@ -121,7 +121,7 @@ export default function BookSlot(){
                     <Card sx={{ mb: 3 }}>
                         <CardContent>
                                 <Typography variant="subtitle1" mt={2} mb={1}>
-                                Select Employees
+                                Select Employees(Optional)
                                 </Typography>
                                 
                                 <Controller

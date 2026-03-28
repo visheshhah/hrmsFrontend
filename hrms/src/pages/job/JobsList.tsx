@@ -48,7 +48,7 @@ export default function JobsList(){
                 <TableCell>{job.jobType}</TableCell>
 
                 <TableCell align="center">
-                  <Button onClick={() => navigate(`/dashboard/job/${job.id}`)} variant="contained">
+                  <Button sx={{mx:1}} onClick={() => navigate(`/dashboard/job/${job.id}`)} variant="contained">
                     View Details
                   </Button>
                 </TableCell>

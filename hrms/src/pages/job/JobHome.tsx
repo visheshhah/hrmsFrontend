@@ -43,12 +43,12 @@ export default function JobHome() {
         <Grid size={{ xs: 12, sm: 4 }}>
           <Card>
             <CardContent>
-              <h3>Close Job</h3>
+              <h3>Manage Job</h3>
               <Button
                 variant="contained"
                 onClick={() => navigate("/dashboard/job/close")}
               >
-                Close
+                Go
               </Button>
             </CardContent>
           </Card>

@@ -17,6 +17,7 @@ import {
   Grid,
   Typography,
   TextField,
+  Stack,
 } from "@mui/material";
 import { openFile } from "../../api/file.api";
  
@@ -96,7 +97,7 @@ export default function VerifyExpense() {
  
   return (
     <Box>
-      <Button onClick={() => navigate("/dashboard/job/list")}>
+      <Button variant="outlined" onClick={() => navigate(-1)}>
         Back
       </Button>
  
@@ -122,18 +123,23 @@ export default function VerifyExpense() {
             </Grid>
  
             <Grid size={{ xs: 6 }}>
-              <Typography>
-                <strong>View Proof:</strong>
-              </Typography>
-              {expense.proofs?.length > 0 && (
-                <Button
-                  variant="contained"
-                  sx={{ mt: 1 }}
-                  onClick={() => openFile(expense.proofs[0].id)}
-                >
-                  View Proof
-                </Button>
-              )}
+              <Stack
+                direction="row"
+                alignItems="center"
+                gap={1}
+              >
+
+          
+                {expense.proofs?.length > 0 && (
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 1 }}
+                    onClick={() => openFile(expense.proofs[0].id)}
+                  >
+                    View Proof
+                  </Button>
+                )}
+              </Stack>
             </Grid>
           </Grid>
  

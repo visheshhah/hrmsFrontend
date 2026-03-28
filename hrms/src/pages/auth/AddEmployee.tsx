@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { addEmployee, getEmployees, type EmployeeResponse } from "../../api/employee.api";
 import { getDepartments, type DepartmentResponse } from "../../api/department.api";
 import { toast } from "react-toastify";
-import { Button, Card, CardContent, Container, MenuItem, TextField, Typography } from "@mui/material";
+import { Button, Card, CardContent, Container, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import type { Dayjs } from "dayjs";
@@ -45,14 +45,23 @@ export default function AddEmployee(){
     const {
         reset,
             control,
-            register,
             handleSubmit,
             formState: { errors },
         } = useForm<FormValues>(
-            { defaultValues: { 
-            departmentId: 0,
-            managerId: 0
-        } }
+            { 
+                defaultValues: {
+                firstName: "",
+                lastName: "",
+                designation: "",
+                phoneNumber: "",
+                email: "",
+                salary: 0,
+                dateOfBirth: null,
+                joiningDate: null,
+                departmentId: 0,
+                managerId: 0,
+            }
+            }
         );
 
     const onSubmit = async (data: FormValues) => {
@@ -65,7 +74,7 @@ export default function AddEmployee(){
             lastName: data.lastName,
             joiningDate: data.joiningDate?.format("YYYY-MM-DD"),
             phoneNumber: data.phoneNumber,
-            salary: data.salary,
+            salary: Number(data.salary),
             departmentId: data.departmentId,
             managerId: data.managerId ? data.managerId : null
             };
@@ -74,7 +83,7 @@ export default function AddEmployee(){
         
             toast.success("Employee added successfully");
             reset();
-            navigate("/employee"); 
+            navigate("/dashboard/employee"); 
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
             toast.error(error.response?.data?.message || "API Error");
@@ -99,6 +108,10 @@ export default function AddEmployee(){
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Card sx={{ mb: 3 }}>
                         <CardContent>
+                             <Stack
+                                direction="column"
+                                gap={2}
+                            >
 
                             <Controller
                                 name="firstName"
@@ -169,7 +182,7 @@ export default function AddEmployee(){
                                 render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    label="last name"
+                                    label="Email"
                                     fullWidth
                                     type="email"
                                     error={!!errors.email}
@@ -185,7 +198,7 @@ export default function AddEmployee(){
                                 render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    label="last name"
+                                    label="Salary"
                                     fullWidth
                                     type="number"
                                     error={!!errors.salary}
@@ -288,15 +301,16 @@ export default function AddEmployee(){
                                             helperText={errors.managerId?.message}
 
                                         >
-                                            <MenuItem value={0}>Select Manager</MenuItem>
+                                            <MenuItem value={0}>--Select Manager--</MenuItem>
                                             {managers?.map((manager) => (
                                             <MenuItem key={manager.id} value={manager.id}>
-                                                {manager.firstName} {manager.lastName}
+                                                {manager.firstName} {manager.lastName} ({manager.designation})
                                             </MenuItem>
                                             ))}
                                         </TextField>
                                         )}
                                     />
+                            </Stack>
 
                                 
                         </CardContent>

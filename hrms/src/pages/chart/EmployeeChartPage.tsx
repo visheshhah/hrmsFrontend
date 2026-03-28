@@ -118,7 +118,7 @@ export default function EmployeeChartPage() {
                     justifyContent="center"
                     gap={4}
                     mt={2}
-                    flexWrap="wrap"
+                    //flexWrap="wrap"
                     width="100%"
                     maxWidth={900}
                 >

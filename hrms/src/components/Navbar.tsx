@@ -3,11 +3,13 @@ import {
   Toolbar,
   Typography,
   Button,
+  Avatar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/useAuth";
 import NotificationBell from "../pages/notification/NotificationBell";
+import { useUser } from "../context/UseUser";
 
 type NavbarProps = {
     drawerWidth: number;
@@ -16,9 +18,11 @@ type NavbarProps = {
 export default function Navbar({ drawerWidth }: NavbarProps) {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { setUser, user } = useUser();
 
   const handleLogout = () => {
     logout();
+    setUser(null); 
     toast.success("Logged out");
     navigate("/login");
   };
@@ -29,8 +33,10 @@ export default function Navbar({ drawerWidth }: NavbarProps) {
       sx={{ zIndex: 1201, ml: `${drawerWidth}px` }}
     >
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          HRMS Dashboard
+        <Typography variant="h6" sx={{ flexGrow: 1, cursor:"pointer" }}
+          onClick={() => navigate("/dashboard")}
+        >
+          HRMS
         </Typography>
 
         <NotificationBell/>
@@ -38,6 +44,20 @@ export default function Navbar({ drawerWidth }: NavbarProps) {
         <Button color="inherit" onClick={handleLogout}>
           Logout
         </Button>
+
+        <Avatar
+           onClick={() => navigate("/dashboard/profile")}
+           sx={{
+            cursor: "pointer",
+            ml: 2,
+            "&:hover": {
+              opacity: 0.8,
+            },
+          }}
+        >
+          {user?.firstName?.charAt(0)}
+        </Avatar>
+
       </Toolbar>
     </AppBar>
   );

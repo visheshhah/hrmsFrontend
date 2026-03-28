@@ -8,7 +8,7 @@ export default function EmployeeTravelHome() {
     <>
       
       <Grid container spacing={2}>
-        <Grid sx={{ m: 2}} size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card>
             <CardContent>
               <h3>Submit Expense</h3>
@@ -21,10 +21,8 @@ export default function EmployeeTravelHome() {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
 
-        <Grid container>
-          <Grid size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 12, sm: 4 }}>
             <Card>
               <CardContent>
                 <h3>Submit Document</h3>
@@ -37,7 +35,22 @@ export default function EmployeeTravelHome() {
               </CardContent>
             </Card>
           </Grid>
-        </Grid>
+
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <Card>
+              <CardContent>
+                <h3>View Travels</h3>
+                <Button
+                  variant="outlined"
+                  onClick={() => navigate("/dashboard/Etravel/travels")}
+                >
+                  Go
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+      
+      </Grid>
     </>
   );
 }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosInstance from "./axiosInstance";
 
 export interface CreateJobRequest{
@@ -9,6 +10,7 @@ export interface CreateJobRequest{
     maxExperience: number;
     jobType: string;
     workPlaceType: string;
+    reviewerIds: number[];
 }
 
 export interface JobResponse{
@@ -85,7 +87,7 @@ export type ShareJob = {
 }
 
 export const shareJob = async (jobId: number, data: ShareJob) => {
-    const res = await axiosInstance.post(`/share/job/${jobId}`, data);
+    await axiosInstance.post(`/share/job/${jobId}`, data);
 }
 
 export type ViewReferralResponse = {
@@ -100,6 +102,43 @@ export type ViewReferralResponse = {
 
 export const getReferrralByJobId = async (id: number): Promise<ViewReferralResponse []> => {
     const res = await axiosInstance.get<ViewReferralResponse[]>(`/job/referral/${id}`);
+    return res.data;
+
+}
+
+export interface UpdateJobRequest{
+    title: string;
+    description: string;
+    location: string;
+    companyName: string;
+    minExperience: number;
+    maxExperience: number;
+    jobType: string;
+    workPlaceType: string;
+    jobCvReviewerIds: number[];
+}
+
+export interface JobDetail{
+    id: number;
+    title: string;
+    description: string;
+    companyName: string;
+    location: string;
+    minExperience: number;
+    maxExperience: number;
+    jobType: string;
+    workPlaceType: string;  
+    status: string; 
+    reviewerIds: number[];
+}
+
+export const updateJob = async(jobId: number, data: UpdateJobRequest): Promise<JobResponse> => {
+    const res = await axiosInstance.patch<JobResponse>(`/job/update/${jobId}`, data);
+    return res.data;
+}
+
+export const getJobDetailById = async (id: number): Promise<JobDetail> => {
+    const res = await axiosInstance.get<JobDetail>(`/job/${id}/detail`);
     return res.data;
 
 }

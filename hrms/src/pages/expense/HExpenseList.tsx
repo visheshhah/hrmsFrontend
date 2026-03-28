@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { getExployeeExpenses, getExployeeExpensesByEmployeeId, submitExpense, type EmployeeExpenseResponse, type SubmitExpense } from "../../api/expense.api"
+import { getApprovedAmountByTravelPlanAndEmployeeByHr, getClaimedAmountByTravelPlanAndEmployeeByHr, getExployeeExpenses, getExployeeExpensesByEmployeeId, submitExpense, type EmployeeExpenseResponse, type SubmitExpense } from "../../api/expense.api"
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Box, Button, Card, CardContent, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Divider, Grid, MenuItem, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 
 
 export default function HExpenseList(){
@@ -11,14 +11,53 @@ export default function HExpenseList(){
     const { travelPlanId, employeeId } = useParams();
     const navigate  = useNavigate();
 
+    const [claimedExpense, setClaimedExpense] = useState(0);
+    const [approvedExpense, setApprovedExpense] = useState(0);
+
     useEffect(() => {
          getExployeeExpensesByEmployeeId(Number(travelPlanId), Number(employeeId))
             .then((data) => setExpenses(data))
             .catch(() => toast.error("Failed to load expense"))
     }, []);
 
+    useEffect(() => {
+                getClaimedAmountByTravelPlanAndEmployeeByHr(Number(travelPlanId), Number(employeeId))
+                    .then((data) => setClaimedExpense(data))
+            }, []);
+    
+    useEffect(() => {
+                getApprovedAmountByTravelPlanAndEmployeeByHr(Number(travelPlanId), Number(employeeId))
+                    .then((data) => setApprovedExpense(data))
+    }, []);
+
     return(
         <Box>
+            <Stack
+                    direction="row"
+                    gap={2}
+                >
+
+                    <Card sx={{ mb: 3, flex: 1 }}>
+                            <CardContent>
+                                <Typography variant="h6">Total Claimed Expense</Typography>
+                
+
+                                <Divider sx={{ my: 2 }} />
+                                <Typography>Rs.{claimedExpense}</Typography>
+                        </CardContent>
+                    </Card>
+
+                    <Card sx={{ mb: 3, flex: 1 }}>
+                            <CardContent>
+                                <Typography variant="h6">Total Approved Expense</Typography>
+                
+
+                                <Divider sx={{ my: 2 }} />
+                                <Typography>Rs.{approvedExpense}</Typography>
+                        </CardContent>
+                    </Card>
+                </Stack>
+
                 <Card sx={{ mt: 4}}>
                     <Typography variant="h6" m={3}>
                         Expenses

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
-import { getGameConfiguration, type GameConfigResponse } from "../../api/slot.api"
+import { deleteSlotConfiguration, getGameConfiguration, type GameConfigResponse } from "../../api/slot.api"
 import { toast } from "react-toastify";
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function AllGameConfiguration(){
-    const [configs, setConfigs] = useState<GameConfigResponse[]>();
+    const [configs, setConfigs] = useState<GameConfigResponse[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -13,6 +13,21 @@ export default function AllGameConfiguration(){
         .then((data) => setConfigs(data))
         .catch(() => toast.error("Cannot load configuration"));
     },[]);
+
+    const handleDelete = async (configId: number) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this configuration?");
+                  if (!confirmDelete) return;
+                
+                  try {
+                    await deleteSlotConfiguration(configId);
+                
+                    setConfigs((prev) => prev.filter((config) => config.id !== configId));
+                
+                    toast.success("Configuration deleted");
+                  } catch {
+                    toast.error("Failed to delete configuration");
+                  }
+    }
 
     return(
         <>
@@ -43,6 +58,9 @@ export default function AllGameConfiguration(){
                         <TableCell align="center">
                         <Button onClick={() => navigate(`/dashboard/game/configure/update/${config.id}`)} variant="contained">
                             Update
+                        </Button>
+                        <Button onClick={() => handleDelete(config.id)} variant="contained">
+                            Delete
                         </Button>
                         </TableCell>
                     </TableRow>

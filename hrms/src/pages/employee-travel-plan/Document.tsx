@@ -2,19 +2,21 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Box, Button, Card, CardContent, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
-import { openDocumentFileE, openFile } from "../../api/file.api";
+import { openDocumentFileE } from "../../api/file.api";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import type { ErrorResponse } from "../../utils/commonInterface";
 import { getDocumentTypes, getEmployeeDocuments, uploadTravelDocument, type DocumentType, type TravelDocumentResponse, type UploadTravelDocumentRequest } from "../../api/document.api";
+import { useUser } from "../../context/UseUser";
 
 export default function Document(){
 
     const[documents, setDocuments] = useState<TravelDocumentResponse[]>([]);
     const [documentTypes, setDocumentTypes] = useState<DocumentType[]>();
+    const { user } = useUser();
     
     const { travelPlanId } = useParams();
-    const navigate  = useNavigate();
+    //const navigate  = useNavigate();
 
     //
         const [documentFile, setDocumentFile] = useState<File | null>(null);
@@ -45,6 +47,7 @@ export default function Document(){
             }
             try {
                 setLoading(true);
+                data.employeeId = user?.employeeId;
                 await uploadTravelDocument(Number(travelPlanId), data, documentFile)
 
                 toast.success("Document uploaded successfully");

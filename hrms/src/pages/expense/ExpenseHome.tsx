@@ -8,7 +8,7 @@ export default function ExpenseHome() {
     <>
       
       <Grid container spacing={2}>
-        <Grid sx={{ m: 2}} size={{ xs: 12, sm: 4 }}>
+        <Grid sx={{ my: 2}} size={{ xs: 12, sm: 4 }}>
           <Card>
             <CardContent>
               <h3>Verify Expense</h3>

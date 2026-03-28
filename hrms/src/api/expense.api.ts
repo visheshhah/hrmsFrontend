@@ -29,10 +29,14 @@ export const submitExpense = async (
 
 };
 
+export const deleteExpense = async (expenseId: number) => {
+    await axiosInstance.delete(`/expense/${expenseId}/delete`);
+}
+
 export type EmployeeExpenseResponse = {
     id: number;
     travelPlanId: number;
-    remark?: number;
+    remark?: string;
     categoryName: string;
     expenseStatus: string;
     amount: number;
@@ -58,6 +62,15 @@ export const getExployeeExpensesByEmployeeId = async (travelPlanId: number, empl
 
 export const getEmployeeExpenseDetail = async (expenseId: number): Promise<EmployeeExpenseResponse> => {
     const res = await axiosInstance.get<EmployeeExpenseResponse>(`/hr/expense/${expenseId}`);
+    return res.data;
+}
+
+export const getExployeeExpensesByEmployeeIdAndStatus = async (travelPlanId: number, employeeId: number, status : string): Promise<EmployeeExpenseResponse[]> => {
+    const res = await axiosInstance.get<EmployeeExpenseResponse[]>(`/hr/expense/${travelPlanId}/${employeeId}/filter`, 
+    {
+        params: { status }
+    }
+    );
     return res.data;
 }
 // public class EmployeeExpenseResponseDto {
@@ -94,5 +107,45 @@ export const rejectExpense = async (data: HrDecision): Promise<HrDecisionRespons
 
 export const approveExpense = async (data: HrDecision): Promise<HrDecisionResponse> => {
     const res = await axiosInstance.post<HrDecisionResponse>("/hr/expense/approve", data);
+    return res.data;
+}
+
+export const getApprovedAmountByTravelPlanAndEmployeeByHr = async (travelPlanId: number, employeeId: number): Promise<number> => {
+    const res = await axiosInstance.get<number>(`/hr/expense/${travelPlanId}/${employeeId}/approved/total`);
+    return res.data;
+}
+
+export const getClaimedAmountByTravelPlanAndEmployeeByHr = async (travelPlanId: number, employeeId: number): Promise<number> => {
+    const res = await axiosInstance.get<number>(`/hr/expense/${travelPlanId}/${employeeId}/claim/total`);
+    return res.data;
+}
+
+export const getTotalClaimedAmountByTravelPlanByHr = async (travelPlanId: number): Promise<number> => {
+    const res = await axiosInstance.get<number>(`/hr/expense/${travelPlanId}/claim/total`);
+    return res.data;
+}
+
+export const getTotalApprovedAmountByTravelPlanByHr = async (travelPlanId: number): Promise<number> => {
+    const res = await axiosInstance.get<number>(`/hr/expense/${travelPlanId}/approved/total`);
+    return res.data;
+}
+
+//EMPLOYEE
+export const getTotalClaimedAmountByEmployee = async (travelPlanId: number): Promise<number> => {
+    const res = await axiosInstance.get<number>(`/expense/${travelPlanId}/claim/total`);
+    return res.data;
+}
+
+export const getTotalApprovedAmountByEmployee = async (travelPlanId: number): Promise<number> => {
+    const res = await axiosInstance.get<number>(`/expense/${travelPlanId}/approved/total`);
+    return res.data;
+}
+
+export const getExployeeExpensesByEmployeeIdAndStatusByEmployee = async (travelPlanId: number, employeeId: number | null | undefined, status : string): Promise<EmployeeExpenseResponse[]> => {
+    const res = await axiosInstance.get<EmployeeExpenseResponse[]>(`/expense/${travelPlanId}/${employeeId}/filter`, 
+    {
+        params: { status }
+    }
+    );
     return res.data;
 }

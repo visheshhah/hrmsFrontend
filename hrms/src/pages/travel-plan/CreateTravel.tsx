@@ -5,7 +5,7 @@ import { type EmployeeResponse } from "../../api/employee.api";
 import { createTravelPlan, type TravelPlanRequest } from "../../api/travel.api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, CardContent, Checkbox, Container, FormControlLabel, FormGroup, TextField, Typography } from "@mui/material";
+import { Button, Card, CardContent, Checkbox, Container, Divider, FormControlLabel, FormGroup, Stack, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -30,7 +30,18 @@ export default function CreateTravel(){
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormValues>();
+    } = useForm<FormValues>({
+            defaultValues: {
+                title: "",
+                description: "",
+                sourceLocation: "",
+                destinationLocation: "",
+                isInternational: false,
+                startDate: null,
+                endDate: null,
+                employees: [],
+            }
+            });
 
 
     useEffect(() => {
@@ -69,7 +80,7 @@ export default function CreateTravel(){
 
     return (
         <Container maxWidth="lg">
-            <Button variant="outlined" onClick={() =>navigate(-1)}>
+            <Button variant="outlined" onClick={() =>navigate(-1)} sx={{my:2}}>
                 Back
             </Button>
             <Typography variant="h5" mb={3}>
@@ -82,6 +93,10 @@ export default function CreateTravel(){
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Card sx={{ mb: 3 }}>
                         <CardContent>
+                            <Stack
+                                direction="column"
+                                gap={2}
+                            >
 
                             <Controller
                                 name="title"
@@ -193,6 +208,8 @@ export default function CreateTravel(){
                                     )}
                                 />
 
+                                <Divider/>
+
                                 <Controller
                                     name="isInternational"
                                     control={control}
@@ -209,7 +226,9 @@ export default function CreateTravel(){
                                     )}
                                 />
 
-                                <Typography variant="subtitle1" mt={2} mb={1}>
+                                <Divider/>
+
+                                <Typography variant="h6" mt={2} mb={1}>
                                 Select Employees
                                 </Typography>
                                 
@@ -249,6 +268,7 @@ export default function CreateTravel(){
                                     {errors.employees.message}
                                 </Typography>
                                 )}
+                            </Stack>
 
                                 
                         </CardContent>

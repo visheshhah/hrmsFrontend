@@ -2,7 +2,7 @@ import axiosInstance from "./axiosInstance";
 
 export type UploadTravelDocumentRequest = {
     documentTypeId: number | "";
-    employeeId?: number;
+    employeeId?: number | undefined | null;
 }
 
 export const uploadTravelDocument = async (
@@ -63,6 +63,11 @@ export const getCommonTravelDocuments = async (id: number): Promise<TravelDocume
     const res = await axiosInstance.get<TravelDocumentResponse []>(`/document/${id}`);
     return res.data;
 }
+
+export const deleteDocument = async (travelDocumentId: number) => {
+    await axiosInstance.delete(`/document/${travelDocumentId}/delete`);
+}
+
 
 //  private Long travelDocumentId;
 //     private Long travelPlanId;
